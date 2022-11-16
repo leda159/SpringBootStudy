@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+
+	<!-- 로그를 어디에 출력할건지 선언 
+		 %d : 로그 기록시간
+		 %p : 로깅 레벨(error > warn > info > debug > trace)
+		 error: 클라이언트 요청 처리시 심각한 문제 발생시 오류
+		 warn: 프로그램 실행에는 문제가 없지만 차후 문제발생 여지 있음	
+		 info: 상태 변경과 같은 정보성 메시지를 출력
+		 debug: 개발시 디버그 용도로 사용
+		 trace: 모든 로그 출력
+		 %c : 로깅이 발생한 카테고리
+		 %C : 로깅이 발생한 클래스명 
+		 %m : 로깅 메시지
+		 %M : 로깅이 발생한 클래스의 메서드명
+		 %n : 줄바꿈
+	-->
+	<!-- 개발시 디버깅용 로깅 선언 -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d %5p [%c] %m%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 일반 로깅 모드 선언 -->
+	<appender name="console-infolog" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d %5p %m%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 
+		로깅 레벨이 DEBUG 이상 될때 console 설정에 따른
+		패턴으로 출력
+	 -->
+	<logger name="board" level="DEBUG" appender-ref="console"/>
+	
+	<!-- p98 -->
+	<logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog"></logger>
+	<!-- sql문장의 결과값을 테이블 형태로 보여준다-->
+	<logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog"></logger>
+	
+	<root level="off">
+		<appender-ref ref="console"/>
+	</root>
+				
+</configuration>

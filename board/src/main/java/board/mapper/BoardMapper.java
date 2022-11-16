@@ -22,6 +22,11 @@ public interface BoardMapper {
 	//특정 게시물 번호에 대한 상세내역
 	BoardDto selectBoardDetail(int boardIdx) throws Exception;
 
+	//특정 게시물 수정 처리
+	void updateBoard(BoardDto board) throws Exception;
+	
+	//특정 게시물 삭제 처리
+	void deleteBoard(int boardIdx) throws Exception;
 }
 
 

@@ -41,6 +41,20 @@ public class BoardServiceImpl implements BoardService {
 		return board;
 	}
 
+	//특정 게시물 수정 처리
+	@Override
+	public void updateBoard(BoardDto board) throws Exception {
+		
+		boardMapper.updateBoard(board);
+	}
+
+	//특정 게시물 삭제 처리
+	@Override
+	public void deleteBoard(int boardIdx) throws Exception {
+		
+		boardMapper.deleteBoard(boardIdx);
+	}
+
 }
 
 

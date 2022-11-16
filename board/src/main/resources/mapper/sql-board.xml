@@ -57,6 +57,26 @@
 	
 	</select>
 	
+	<!-- 특정 게시물 수정 처리 -->
+	<update id="updateBoard"
+			parameterType="board.dto.BoardDto">
+		update t_board
+		   set title = #{title},
+		       contents = #{contents},
+		       updated_datetime = now(),
+		       updater_id = 'admin'
+		 where board_idx = #{boardIdx}      	
+	</update>
+	
+	<!-- 특정 게시물 삭제 처리 -->
+	<update id="deleteBoard"
+			parameterType="int">
+		update t_board
+		   set deleted_yn = 'Y',
+		       updated_datetime = now(),
+		       updater_id = 'admin'
+		 where board_idx = #{boardIdx}      
+	</update>
 	
 </mapper>
 

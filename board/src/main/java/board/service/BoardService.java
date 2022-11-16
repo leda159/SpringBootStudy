@@ -18,6 +18,12 @@ public interface BoardService {
 	
 	//특정 게시물 상세 보기 처리
 	BoardDto selectBoardDetail(int boardIdx) throws Exception;
+
+	//특정 게시물 수정 처리
+	void updateBoard(BoardDto board) throws Exception;
+	
+	//특정 게시물 삭제 처리
+	void deleteBoard(int boardIdx) throws Exception;
 }
 
 

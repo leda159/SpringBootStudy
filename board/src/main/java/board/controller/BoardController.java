@@ -2,6 +2,8 @@ package board.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,9 @@ import board.service.BoardService;
 @Controller
 public class BoardController {
 
+	//로깅 선언
+	private Logger log = LoggerFactory.getLogger(this.getClass());
+	
 	//서비스 기능을 수행하는 클래스 선언
 	@Autowired
 	private BoardService boardService;
@@ -23,6 +28,9 @@ public class BoardController {
 	//실행하려는 URL + Model 데이터 선언
 	@RequestMapping("/board/openBoardList.do")
 	public ModelAndView openBoardList() throws Exception {
+		
+		
+		log.debug("openBoardList.do 실행");
 		
 		//templates 폴더 밑에 board폴더밑에
 		//boardList.html을 찾는다.
@@ -73,6 +81,24 @@ public class BoardController {
 		return mv;
 	}
 	
+	//게시물 수정 처리
+	@RequestMapping("/board/updateBoard.do")
+	public String updateBoard(BoardDto board) throws Exception {
+
+		boardService.updateBoard(board);
+		
+		//게시물 목록으로 이동
+		return "redirect:/board/openBoardList.do";
+	}
+	
+	//게시물 삭제 처리
+	@RequestMapping("/board/deleteBoard.do")
+	public String deleteBoard(int boardIdx) throws Exception {
+		
+		boardService.deleteBoard(boardIdx);
+		
+		return "redirect:/board/openBoardList.do";
+	}
 }
 
 
