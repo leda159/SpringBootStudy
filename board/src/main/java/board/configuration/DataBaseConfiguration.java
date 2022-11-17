@@ -11,6 +11,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -19,8 +22,10 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 //스프링 부트 설정 정보를 읽어오는 어노테이션
 @PropertySource("classpath:/application.properties")
+//Transaction을 처리하는 어노테이션으로
+@EnableTransactionManagement
 public class DataBaseConfiguration {
-
+	
 	//ApplicationContext
 	//별도의 설정 정보를 참고하여 Bean 생성,관계설정등 
 	//총괄적인 일을 하는 인터페이스
@@ -38,7 +43,7 @@ public class DataBaseConfiguration {
 
 	//데이터베이스 연결 설정 Bean 등록
 	@Bean
-	public DataSource dataSouce() {
+	public DataSource dataSource() {
 		DataSource dataSource = 
 				new HikariDataSource(hikariConfig());
 		
@@ -85,6 +90,12 @@ public class DataBaseConfiguration {
 	public SqlSessionTemplate 
 	   sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
 		  return new SqlSessionTemplate(sqlSessionFactory);
+	}
+	
+	//transaction 처리
+	@Bean
+	public PlatformTransactionManager transactionManager() throws Exception{
+		return new DataSourceTransactionManager(dataSource());
 	}
 }
 
