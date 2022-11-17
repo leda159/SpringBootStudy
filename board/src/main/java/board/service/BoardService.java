@@ -2,6 +2,8 @@ package board.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import board.dto.BoardDto;
 
 //Controller 와 DAO 객체와의 결합도를 낮추어
@@ -14,7 +16,8 @@ public interface BoardService {
 	List<BoardDto> selectBoardList() throws Exception;
 	
 	//신규 게시물 추가 처리
-	void insertBoard(BoardDto board) throws Exception;
+	void insertBoard(BoardDto board, MultipartHttpServletRequest 
+			multipartHttpServletRequest ) throws Exception;
 	
 	//특정 게시물 상세 보기 처리
 	BoardDto selectBoardDetail(int boardIdx) throws Exception;

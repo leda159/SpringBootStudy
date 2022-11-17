@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import board.dto.BoardDto;
+import board.dto.BoardFileDto;
 
 //MyBatis 처리 Mapper 인터페이스를 선언
 @Mapper
@@ -27,6 +28,9 @@ public interface BoardMapper {
 	
 	//특정 게시물 삭제 처리
 	void deleteBoard(int boardIdx) throws Exception;
+	
+	//파일 업로드
+	void insertBoardFileList(List<BoardFileDto> list) throws Exception;
 }
 
 
