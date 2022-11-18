@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import board.dto.BoardFileDto;
 
-//Bean등록을 처리하는 어노테이션
+//Bean등록을 처리하는 어노테이션/
 @Component
 public class FileUtils {
 
