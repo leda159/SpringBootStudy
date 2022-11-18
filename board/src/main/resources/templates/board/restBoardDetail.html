@@ -38,7 +38,9 @@
 				</tbody>
 				
 			</table>
-			<input type="hidden" name="boardIdx" th:value="${board.boardIdx}">
+			<input type="hidden" id="boardIdx" name="boardIdx" 
+				   th:value="${board.boardIdx}">
+			<input type="hidden" id="method" name="_method" />	   
 		</form>
 		
 		
@@ -49,9 +51,8 @@
 		-->
 		<div class="file_list">
 			<a th:each="list : ${board.fileList}"
-			   th:href="@{/board/downloadBoardFile.do(idx=${list.idx}, boardIdx=${list.boardIdx})}" 
-			   th:text="|${list.originalFileName}
-			   (${list.fileSize} kb)|"></a>
+			   th:href="@{/board/file(idx=${list.idx}, boardIdx=${list.boardIdx})}" 
+			   th:text="|${list.originalFileName} (${list.fileSize} kb)|"></a>
 		</div>
 		
 		<input type="button" id="list" value="목록">
@@ -69,19 +70,22 @@
 				
 				//수정버튼 클릭 처리
 				$("#edit").on("click",function(){
+					
 					//첫번째 form에 대한 내역을 변수에 대입
+					$("#method").val("put");
 					var frm = $("#frm")[0];
-					frm.action ="updateBoard.do";
+					frm.action ="/board/" + boardIdx;
 					frm.submit();
 				});
 				
 				//삭제버튼을 클릭 처리
 				$("#delete").on("click",function(){
+					
+					$("#method").val("delete");
 					var frm = $("#frm")[0];
-					frm.action = "deleteBoard.do";
+					frm.action ="/board/" + boardIdx;
 					frm.submit();
 				});
-				
 			});
 		</script>
 		

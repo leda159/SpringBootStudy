@@ -18,9 +18,14 @@
 	
 	</select>
 	
-	<!-- 신규 게시물 추가 처리 -->
+	<!-- 
+		신규 게시물 추가 처리 
+	    현재 insert된 게시물번호를 리턴해준다.
+	-->
 	<insert id="insertBoard"
-			parameterType="board.dto.BoardDto">
+			parameterType="board.dto.BoardDto"
+			useGeneratedKeys= "true" 
+			keyProperty="boardIdx">
 		<![CDATA[
 			insert into t_board(
 					title,
@@ -77,6 +82,71 @@
 		       updater_id = 'admin'
 		 where board_idx = #{boardIdx}      
 	</update>
+	
+	<!-- p139 첨부파일 등록 처리 -->
+	<insert id="insertBoardFileList"
+			parameterType="board.dto.BoardFileDto">
+		<![CDATA[
+			insert into t_file(
+				board_idx,original_file_name,
+				stored_file_path,file_size,
+				creator_id,created_datetime)
+				values
+		]]>
+		
+		<!-- 
+			한꺼번에 첨부파일을 추가
+			collection : 전달받은 매개변수
+			
+			item: collection에서 한row씩
+			가져와 item 변수에 대입
+			
+			separator : 구분자
+			 
+		-->
+		
+		<foreach collection="list" 
+				 item="item" separator=",">
+			(
+				#{item.boardIdx},
+				#{item.originalFileName},
+				#{item.storedFilePath},
+				#{item.fileSize},
+				'admin',
+				now()
+			)
+		</foreach>		
+	</insert>
+	
+	<!-- 파일 첨부목록 처리  -->
+	<select id="selectBoardFileList"
+			parameterType="int"
+			resultType="board.dto.BoardFileDto">
+		
+		<!-- 
+		round : 반올림 처리  
+		format : 천다위 콤마 표시
+		-->
+		select idx,board_idx,original_file_name,
+			   format(round(file_size / 1024),0) as file_size
+		  from t_file
+		 where board_idx = #{boardIdx}
+		   and deleted_yn = 'N' 	   
+	</select>
+	
+	<select id="selectBoardFileInformation" parameterType="map"
+			resultType="board.dto.BoardFileDto">
+	
+		select original_file_name,
+			   stored_file_path,
+			   file_size
+			from
+			   t_file
+		   where
+			   idx = #{idx}
+			   and board_idx = #{boardIdx}
+			   and deleted_yn = 'N' 	   	   
+	</select>
 	
 </mapper>
 
