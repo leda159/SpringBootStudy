@@ -8,7 +8,8 @@
 <body>
 	<div class="container">
 		<h2>게시판 상세 화면</h2>
-		<form id="frm" name="frm" action="#" method="post">
+		<form id="frm" name="frm" 
+			  action="#" method="post">
 			<table class="board_detail">
 				<tbody>
 					<tr>
@@ -38,21 +39,19 @@
 				</tbody>
 				
 			</table>
-			<input type="hidden" id="boardIdx" name="boardIdx" 
-				   th:value="${board.boardIdx}">
-			<input type="hidden" id="method" name="_method" />	   
+			<input type="hidden" id="boardIdx" name="boardIdx" th:value="${board.boardIdx}">
+			<input type="hidden" id="method" name="_method"/>
 		</form>
 		
-		
-		<!-- p143 첨부파일 목록 --> 
-		<!--
-		/board/downloadBoardFile.do 첨부파일 다운로드 처리 url
-		매개변수 : 첨부파일 일련번호, 게시물번호
+		<!-- p143 첨부파일 목록 
+		/board/downloadBoardFile.do 
+		첨부파일 다운로드 처리 url
+		매개변수 : 첨부파일 일련번호,게시물번호
 		-->
 		<div class="file_list">
 			<a th:each="list : ${board.fileList}"
-			   th:href="@{/board/file(idx=${list.idx}, boardIdx=${list.boardIdx})}" 
-			   th:text="|${list.originalFileName} (${list.fileSize} kb)|"></a>
+			   th:href="@{/board/file(idx=${list.idx},boardIdx=${list.boardIdx})}" 
+			   th:text="|${list.originalFileName}(${list.fileSize} kb)|"></a>
 		</div>
 		
 		<input type="button" id="list" value="목록">
@@ -64,14 +63,14 @@
 		
 			$(document).ready(function(){
 				
+				var boardIdx = $("#boardIdx").val();
+				
 				$("#list").on("click",function(){
 					location.href="openBoardList.do";
 				});
 				
 				//수정버튼 클릭 처리
 				$("#edit").on("click",function(){
-					
-					//첫번째 form에 대한 내역을 변수에 대입
 					$("#method").val("put");
 					var frm = $("#frm")[0];
 					frm.action ="/board/" + boardIdx;
@@ -80,12 +79,12 @@
 				
 				//삭제버튼을 클릭 처리
 				$("#delete").on("click",function(){
-					
 					$("#method").val("delete");
 					var frm = $("#frm")[0];
 					frm.action ="/board/" + boardIdx;
 					frm.submit();
 				});
+				
 			});
 		</script>
 		

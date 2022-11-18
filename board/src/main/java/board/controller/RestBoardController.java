@@ -21,88 +21,91 @@ import board.dto.BoardDto;
 import board.dto.BoardFileDto;
 import board.service.BoardService;
 
-//Rest방식
+//REST 방식으로 게시판 처리
 @Controller
 public class RestBoardController {
 
 	//자동 주입 처리
 	@Autowired
 	private BoardService boardService;
-	
+
 	//게시물 목록 처리
-	@RequestMapping(value="/board", method=RequestMethod.GET)
-	public ModelAndView openBoardList() throws Exception{
-		
+	@RequestMapping(value = "/board", method = RequestMethod.GET)
+	public ModelAndView openBoardList() throws Exception {
+
 		ModelAndView mv = new ModelAndView("/board/restBoardList");
-		
+
 		List<BoardDto> list = boardService.selectBoardList();
-		mv.addObject("list",list);
-		
+		mv.addObject("list", list);
+
 		return mv;
 	}
-	
-	//신규 게시물 등록 처리 화면
-	@RequestMapping(value="/board/write", method=RequestMethod.GET)
-	public String openBoardWrite() throws Exception{
+
+	//신규 게시물 등록 처리 화면 
+	@RequestMapping(value = "/board/write", method = RequestMethod.GET)
+	public String openBoardWrite() throws Exception {
+
 		return "/board/restBoardWrite";
 	}
-	
-	//게시물 등록 화면에서 등록버튼을 클릭 처리
-	@RequestMapping(value="/board/write", method=RequestMethod.POST)
-	public String insertBoard(BoardDto board, MultipartHttpServletRequest
-			multipartHttpServletRequest) throws Exception{
-		
+
+	//게시물 등록 화면에서 등록버튼을 클릭하면 처리
+	@RequestMapping(value = "/board/write", method = RequestMethod.POST)
+	public String insertBoard(BoardDto board, MultipartHttpServletRequest multipartHttpServletRequest)
+			throws Exception {
+
 		//신규 게시물 등록 처리
-		boardService.insertBoard(board,multipartHttpServletRequest);
-		
+		boardService.insertBoard(board, multipartHttpServletRequest);
+
 		//게시물 목록으로 이동
 		return "redirect:/board";
 	}
-	
-	//특정 게시물 번호 상세내역 처리
-	@RequestMapping(value="/board/{boardIdx}", method=RequestMethod.GET)
-	public  ModelAndView openBoardDetail(@PathVariable("boardIdx") 
-			int boardIdx) throws Exception{
-		
+
+	//특정 게시물 번호 상세보기 화면 처리
+	@RequestMapping(value = "/board/{boardIdx}", method = RequestMethod.GET)
+	public ModelAndView openBoardDetail(@PathVariable("boardIdx") int boardIdx) throws Exception {
+
 		//상세보기 화면 지정
 		ModelAndView mv = new ModelAndView("/board/restBoardDetail");
-		
+
 		//특정 게시물 번호에 대한 내역을 변수에 대입
 		BoardDto board = boardService.selectBoardDetail(boardIdx);
-		
+		mv.addObject("board", board);
+
 		return mv;
 	}
-	
+
 	//특정 게시물 수정 처리
-	@RequestMapping(value="/board/{boardIdx}", method=RequestMethod.PUT)
-	public  String updateBoard(BoardDto board) throws Exception{
-		
-		//게시물 수정 처리
+	@RequestMapping(value = "/board/{boardIdx}", method = RequestMethod.PUT)
+	public String updateBoard(BoardDto board) throws Exception {
+
+		//게시물 수정
 		boardService.updateBoard(board);
-		
+
 		//게시물 목록으로 이동
 		return "redirect:/board";
 	}
-	
+
 	//특정 게시물 삭제 처리
-	@RequestMapping(value="/board/{boardIdx}", method=RequestMethod.DELETE)
-	public  String deleteBoard(@PathVariable("boardIdx") 
-			int boardIdx) throws Exception{
-		
+	@RequestMapping(value = "/board/{boardIdx}", method = RequestMethod.DELETE)
+	public String deleteBoard(@PathVariable("boardIdx") int boardIdx) throws Exception {
+
 		//게시물 삭제 처리
 		boardService.deleteBoard(boardIdx);
-		
-		//게시물 목록으로 이동
+
+		//게시물 목록 이동
 		return "redirect:/board";
 	}
-	
-	//특정 파일 다운로드 처리
+
+	//특정 첨부파일 다운로드 처리
 	@RequestMapping(value="/board/file",method=RequestMethod.GET)
 	public void downloadBoardFile(
 			@RequestParam int idx,
 			@RequestParam int boardIdx,
 			HttpServletResponse response) throws Exception {
-		BoardFileDto boardFile = boardService.selectBoardFileInformation(idx, boardIdx);
+		
+		//특정 첨부파일 내역을 가져와서 변수에 대입
+		BoardFileDto boardFile = 
+				boardService.selectBoardFileInformation(idx, boardIdx);
 		
 		if(ObjectUtils.isEmpty(boardFile) == false) {
 			
@@ -125,10 +128,3 @@ public class RestBoardController {
 	}	
 	
 }
-
-
-
-
-
-
-
