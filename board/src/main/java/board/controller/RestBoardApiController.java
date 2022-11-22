@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import board.dto.BoardDto;
 import board.service.BoardService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 /*Rest API 방식으로 게시판 구현
 (Representational State Transfer
@@ -23,12 +26,14 @@ import board.service.BoardService;
 //@ResponseBody?
 //클라이언트의 요청에 대한 응답시 데이터를 JSON형태로 
 //변환하여 응답처리한다.
+@Api(description="게시물 REST API")
 @RestController
 public class RestBoardApiController {
 
 	@Autowired
 	private BoardService boardService;
-	
+
+	@ApiOperation(value="게시물 목록 조회")
 	//Rest API 방식의 게시물 목록
 	@RequestMapping(value="/api/board",method=RequestMethod.GET)
 	public List<BoardDto> openboardList() throws Exception{
@@ -39,18 +44,21 @@ public class RestBoardApiController {
 	//@RequestBody?
 	//클라이언트에서 전송하는 JSON형태의 데이터를
 	//Java 객체에 매핑하여 전달해주는 어노테이션
+	@ApiOperation(value="게시물 작성")
 	@RequestMapping(value="/api/board/write",method=RequestMethod.POST)
 	public void insertBoard(@RequestBody BoardDto board) throws Exception {
 		boardService.insertBoard(board,null);
 	}
 	
 	//특정 게시물 번호에 대한 상세내역 처리
+	@ApiOperation(value="게시물 상세 내용 조회")
 	@RequestMapping(value="/api/board/{boardIdx}",method=RequestMethod.GET)
 	public BoardDto openBoardDetail(@PathVariable("boardIdx") int boardIdx) throws Exception {
 		return boardService.selectBoardDetail(boardIdx);
 	}
 	
 	//특정 게시물 수정 처리
+	@ApiOperation(value="게시물 상세 내용 수정")
 	@RequestMapping(value="/api/board/{boardIdx}",method=RequestMethod.PUT)
 	public String updateBoard(@RequestBody BoardDto board) throws Exception {
 		boardService.updateBoard(board);
@@ -59,8 +67,9 @@ public class RestBoardApiController {
 	}
 	
 	//특정 게시물 삭제 처리
+	@ApiOperation(value="게시물 삭제")
 	@RequestMapping(value="/api/board/{boardIdx}",method=RequestMethod.DELETE)
-	public String deleteBoard(@PathVariable("boardIdx") int boardIdx) throws Exception {
+	public String deleteBoard(@PathVariable("boardIdx") @ApiParam(value="게시글번호")int boardIdx) throws Exception {
 		boardService.deleteBoard(boardIdx);
 		
 		return "redirect:/api/board";
